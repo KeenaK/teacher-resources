@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mrs. Frank's Resources</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px;
+            flex: 1 1 30%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        .resource-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .resource-list li {
+            margin: 10px 0;
+        }
+        .resource-list a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        .resource-list a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-container input, .form-container select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teacher Resource Page</h1>
+
+    <div class="form-container">
+        <h2>Add New Resource</h2>
+        <form id="resource-form">
+            <label for="resource-type">Type of Resource:</label>
+            <select id="resource-type" required>
+                <option value="websites">Website</option>
+                <option value="videos">Video</option>
+                <option value="transitions">Transition</option>
+            </select>
+            <label for="resource-subject">Subject Area:</label>
+            <select id="resource-subject" required>
+                <option value="reading">Reading</option>
+                <option value="writing">Writing</option>
+                <option value="handwriting">Handwriting</option>
+                <option value="phonics">Phonics</option>
+                <option value="math">Math</option>
+                <option value="content">Content</option>
+            </select>
+            <label for="resource-name">Resource Name:</label>
+            <input type="text" id="resource-name" required>
+            <label for="resource-url">Resource URL:</label>
+            <input type="url" id="resource-url" required>
+            <button type="submit">Add Resource</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <!-- Websites Section -->
+        <div class="section">
+            <h2>Websites</h2>
+            <h3>Reading</h3>
+            <ul class="resource-list" id="websites-reading"></ul>
+            <h3>Writing</h3>
+            <ul class="resource-list" id="websites-writing"></ul>
+            <h3>Handwriting</h3>
+            <ul class="resource-list" id="websites-handwriting"></ul>
+            <h3>Phonics</h3>
+            <ul class="resource-list" id="websites-phonics"></ul>
+            <h3>Math</h3>
+            <ul class="resource-list" id="websites-math"></ul>
+            <h3>Content</h3>
+            <ul class="resource-list" id="websites-content"></ul>
+        </div>
+
+        <!-- Videos Section -->
+        <div class="section">
+            <h2>Videos</h2>
+            <h3>Reading</h3>
+            <ul class="resource-list" id="videos-reading"></ul>
+            <h3>Writing</h3>
+            <ul class="resource-list" id="videos-writing"></ul>
+            <h3>Handwriting</h3>
+            <ul class="resource-list" id="videos-handwriting"></ul>
+            <h3>Phonics</h3>
+            <ul class="resource-list" id="videos-phonics"></ul>
+            <h3>Math</h3>
+            <ul class="resource-list" id="videos-math"></ul>
+            <h3>Content</h3>
+            <ul class="resource-list" id="videos-content"></ul>
+        </div>
+
+        <!-- Transitions Section -->
+        <div class="section">
+            <h2>Transitions</h2>
+            <h3>Reading</h3>
+            <ul class="resource-list" id="transitions-reading"></ul>
+            <h3>Writing</h3>
+            <ul class="resource-list" id="transitions-writing"></ul>
+            <h3>Handwriting</h3>
+            <ul class="resource-list" id="transitions-handwriting"></ul>
+            <h3>Phonics</h3>
+            <ul class="resource-list" id="transitions-phonics"></ul>
+            <h3>Math</h3>
+            <ul class="resource-list" id="transitions-math"></ul>
+            <h3>Content</h3>
+            <ul class="resource-list" id="transitions-content"></ul>
+        </div>
+    </div>
+
+    <!-- Script to handle form submission and add resources -->
+    <script>
+        const resources = {
+            websites: {
+                reading: [],
+                writing: [],
+                handwriting: [],
+                phonics: [],
+                math: [],
+                content: []
+            },
+            videos: {
+                reading: [],
+                writing: [],
+                handwriting: [],
+                phonics: [],
+                math: [],
+                content: []
+            },
+            transitions: {
+                reading: [],
+                writing: [],
+                handwriting: [],
+                phonics: [],
+                math: [],
+                content: []
+            }
+        };
+
+        const form = document.getElementById('resource-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById('resource-type').value;
+            const subject = document.getElementById('resource-subject').value;
+            const name = document.getElementById('resource-name').value;
+            const url = document.getElementById('resource-url').value;
+            
+            resources[type][subject].push({ name, url });
+            updateResourceList(type, subject);
+            
+            form.reset();
+        });
+
+        function updateResourceList(type, subject) {
+            const list = document.getElementById(`${type}-${subject}`);
+            list.innerHTML = '';
+            resources[type][subject].forEach(resource => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = resource.url;
+                link.textContent = resource.name;
+                link.target = '_blank';
+                listItem.appendChild(link);
+                list.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
